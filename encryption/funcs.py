@@ -38,7 +38,7 @@ def matrix_to_message(matrix : np.ndarray) -> str:
     return ''.join([alphabet[np.argmax(col)] for col in matrix.T])
 
 
-def gerar_matrizes_de_permutacao(N : int) -> tuple[np.ndarray, np.ndarray]:
+def gerar_matrizes_de_permutacao(N : int = len(alphabet)) -> tuple[np.ndarray, np.ndarray]:
     """
     Gera duas matrizes de permutação de tamanho N x N.
     """
@@ -59,7 +59,6 @@ def gerar_matrizes_de_permutacao(N : int) -> tuple[np.ndarray, np.ndarray]:
                             np.random.permutation(np.eye(N)) if rand == 1 else permutations[1])
             
     return permutations
-
 
 def encriptar_enigma(mensagem : str,
               P : np.ndarray,

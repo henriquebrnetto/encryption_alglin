@@ -3,45 +3,66 @@ Encryption functions for Linear Algebra project.
 
 Este pacote possui 3 funções:
 
-- gerar_matrizes_de_permutacao:  
-    Nesta função o input é um número inteiro, e o output são duas matrizes identidade com permutações aleatórias nas posições des valor 1.
+```
+gerar_matrizes_de_permutacao:
+```
+
+- Nesta função o input é um número inteiro N (neste caso deve ser o tamanho das letras únicas disponíveis na sua mensagem), e o output são duas matrizes identidade NxN com permutações aleatórias.
+- Se a função for chamada sem input, N será a quantidade de caracteres no Código ASCII + todos os caracteres com acento do português.
 
     $$
     \begin{equation}
-    A  \in {\rm I\!R}^{3x3}
+    A  \in {\rm I\!R}^{NxN}
     \end{equation}
     $$
+  
+```
+encriptar_enigma:
+```
+
+- aaaa
+- bbbb
 
     $$
-    
-    A =
     \begin{equation}
-    \begin{pmatrix}
-    1      & 0       & 0  \\
-    0      & 1       & 0  \\
-    0      & 0       & 1  \\
-    \end{pmatrix}
+    TESTE1
     \end{equation}
-
     $$
 
+```
+decriptar_enigma:
+```
+
+- ccccc
+- ddddd
+
     $$
-    
-    gerarMatrizesDePermutacao(A) =
     \begin{equation}
-    \begin{drcases}
-    \begin{pmatrix}
-    0      & 1       & 0  \\
-    0      & 0       & 1  \\
-    1      & 0       & 0  \\
-    \end{pmatrix}
-    ,
-    \begin{pmatrix}
-    0      & 1       & 0  \\
-    1      & 0       & 0  \\
-    0      & 0       & 1  \\
-    \end{pmatrix}
-    \end{drcases}
+    TESTE2
     \end{equation}
-
     $$
+
+
+
+### Pip install
+
+```
+pip install git+https://github.com/henriquebrnetto/encryption_alglin.git
+```
+
+### Exemplo de uso das funções:
+
+```
+import encryption.funcs as enc
+
+msg = 'Esta é uma mensagem secreta que será encriptada e decriptada pelo enigma'
+
+# chamar a função 'gerar_matrizes_de_permutacao()' sem argumento é a mesma coisa que utilizar 'len(enc.alphabet)' como input
+P, Q = enc.gerar_matrizes_de_permutacao()
+#P, Q = enc.gerar_matrizes_de_permutacao(len(np.unique(list(msg))))
+
+encrypt = enc.encriptar_enigma(msg, P, Q)
+decrypt = enc.decriptar_enigma(encrypt, P, Q)
+```
+
+Utilizando o argumento 'len(np.unique(list(msg)))' na função 'gerar_matrizes_de_permutacao()' são criadas duas matrizes apenas com os caracteres únicos disponíveis na variável 'msg'.
