@@ -99,10 +99,3 @@ def decriptar_enigma(mensagem_encriptada : str,
         message_matrix[:, i] = mult_matrix.dot(message_matrix[:, i])
 
     return matrix_to_message(message_matrix)
-
-msg = 'Meu nome é felipe e eu sou um boiola... eu mamo o tchelo dlc'
-P, Q = gerar_matrizes_de_permutacao(len(alphabet))
-critpo = encriptar_enigma(msg, P, Q)
-
-print(critpo)
-print(decriptar_enigma(critpo, P, Q))
