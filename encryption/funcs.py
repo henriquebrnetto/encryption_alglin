@@ -1,4 +1,42 @@
 import numpy as np
+import string
+
+letras_acentuadas = ['á', 'à', 'â', 'ã', 'ä', 'é', 'è', 'ê', 'ë', 'í', 'ì', 'î', 'ï', 'ó', 'ò', 'ô', 'õ', 'ö', 'ú', 'ù', 'û', 'ü', 'ç', 'Á', 'À', 'Â', 'Ã', 'Ä', 'É', 'È', 'Ê', 'Ë', 'Í', 'Ì', 'Î', 'Ï', 'Ó', 'Ò', 'Ô', 'Õ', 'Ö', 'Ú', 'Ù', 'Û', 'Ü', 'Ç']
+alphabet = string.ascii_letters + string.digits + string.punctuation + string.whitespace + ''.join(letras_acentuadas)
+
+def transform_letter(letter) -> np.ndarray:
+    """
+    Transforma uma letra em um vetor one-hot.
+    O vetor one-hot é um vetor de zeros com um 1 na posição da letra.
+
+    Alphabet é um numpy array com todas as letras da mensagem e letras disponíveis para a criptografia.
+    Se não for passado, ele é calculado automaticamente como as ocorrências únicas das letras da mensagem.
+    """
+    return np.array([1 if c == letter else 0 for c in alphabet])
+
+
+def message_to_matrix(message : str) -> np.ndarray:
+    """
+    Transforma uma mensagem em uma matriz.
+    Cada coluna da matriz é um vetor one-hot representando uma letra da mensagem.
+
+    Alphabet é um numpy array com todas as letras da mensagem e letras disponíveis para a criptografia.
+    Se não for passado, ele é calculado automaticamente como as ocorrências únicas das letras da mensagem.
+    """
+
+    return np.array([transform_letter(char) for char in message]).T
+
+def matrix_to_message(matrix : np.ndarray) -> str:
+    """
+    Transforma uma matriz em uma mensagem.
+    Cada coluna da matriz é um vetor one-hot representando uma letra da mensagem.
+
+    Alphabet é um numpy array com todas as letras da mensagem e letras disponíveis para a criptografia.
+    Se não for passado, ele é calculado automaticamente como as ocorrências únicas das letras da mensagem.
+    """
+
+    return ''.join([alphabet[np.argmax(col)] for col in matrix.T])
+
 
 def gerar_matrizes_de_permutacao(N : int) -> tuple[np.ndarray, np.ndarray]:
     """
@@ -19,6 +57,7 @@ def gerar_matrizes_de_permutacao(N : int) -> tuple[np.ndarray, np.ndarray]:
             rand = 1 if np.random.random() > 0.5 else 0
             permutations = (np.random.permutation(np.eye(N)) if rand == 0 else permutations[0],
                             np.random.permutation(np.eye(N)) if rand == 1 else permutations[1])
+            
     return permutations
 
 
@@ -27,11 +66,19 @@ def encriptar_enigma(mensagem : str,
               Q : np.ndarray) -> str:
     """
     Encripta uma mensagem usando duas matrizes de permutação P e Q.
+
+    Alphabet é um numpy array com todas as letras da mensagem e letras disponíveis para a criptografia.
+    Se não for passado, ele é calculado automaticamente como as ocorrências únicas das letras da mensagem.
     """
-    
-    mensagem = np.array([ord(c) for c in mensagem])
-    enc = P.dot(Q).dot(mensagem)
-    return ''.join(np.array([chr(int(c)) for c in enc]))
+
+    message_matrix = message_to_matrix(mensagem)
+    mult_matrix = P
+    for i in range(np.shape(message_matrix)[1]):
+        if i != 0:
+            mult_matrix = Q.dot(mult_matrix)
+        message_matrix[:, i] = mult_matrix.dot(message_matrix[:, i])
+
+    return matrix_to_message(message_matrix)
 
 
 def decriptar_enigma(mensagem_encriptada : str,
@@ -42,6 +89,20 @@ def decriptar_enigma(mensagem_encriptada : str,
     Decripta uma mensagem encriptada usando duas matrizes de permutação P e Q.
     """
     
-    mensagem_encriptada = np.array([ord(c) for c in mensagem_encriptada])
-    dec = np.linalg.inv(Q).dot(np.linalg.inv(P)).dot(mensagem_encriptada)
-    return ''.join(np.array([chr(int(c)) for c in dec]))
+    message_matrix = message_to_matrix(mensagem_encriptada)
+
+    mult_matrix = np.linalg.inv(P)
+    Q = np.linalg.inv(Q)
+    for i in range(np.shape(message_matrix)[1]):
+        if i != 0:
+            mult_matrix = mult_matrix.dot(Q)
+        message_matrix[:, i] = mult_matrix.dot(message_matrix[:, i])
+
+    return matrix_to_message(message_matrix)
+
+msg = 'Meu nome é felipe e eu sou um boiola... eu mamo o tchelo dlc'
+P, Q = gerar_matrizes_de_permutacao(len(alphabet))
+critpo = encriptar_enigma(msg, P, Q)
+
+print(critpo)
+print(decriptar_enigma(critpo, P, Q))
