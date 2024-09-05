@@ -1,7 +1,7 @@
 # encryption_alglin
 Encryption functions for Linear Algebra project.
 
-Este pacote possui 3 funções:
+Este pacote possui 3 funções principais:
 
 ```
 gerar_matrizes_de_permutacao:
