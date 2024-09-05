@@ -20,12 +20,13 @@ gerar_matrizes_de_permutacao:
 encriptar_enigma:
 ```
 
-- aaaa
-- bbbb
+- O input desta função é a mensagem (string), e duas matrizes de transformação, P e Q (ambos numpy.array).
+- É necessário ter um alfabeto definido para conseguir utilizar a função. Como temos um alfabeto pré-definido no início do arquivo com as funções, o usuário não deve se preocupar com isso.
+- Sendo X a matriz que representa a mensagem original, e X' a matriz da palavra encriptada, o cálculo realizado é demonstrado a seguir:
 
     $$
     \begin{equation}
-    TESTE1
+    X'_{*,i} = (Q^{(i-1)} \cdot P) \cdot X_{*,i}
     \end{equation}
     $$
 
@@ -33,12 +34,13 @@ encriptar_enigma:
 decriptar_enigma:
 ```
 
-- ccccc
-- ddddd
+- O input desta função é a mensagem encriptada (string), e as duas matrizes de transformação, P e Q (ambos numpy.array) utilizadas para encriptar a mensagem anteriormente.
+- É necessário ter um alfabeto definido para conseguir utilizar a função. Como temos um alfabeto pré-definido no início do arquivo com as funções, o usuário não deve se preocupar com isso.
+- Sendo X a matriz que representa a mensagem original, e X' a matriz da palavra encriptada, o cálculo realizado é demonstrado a seguir:
 
     $$
     \begin{equation}
-    TESTE2
+    X_{*,i} =  P^{-1} \cdot (Q^{-1})^{(i-1)} \cdot X'_{*,i}
     \end{equation}
     $$
 

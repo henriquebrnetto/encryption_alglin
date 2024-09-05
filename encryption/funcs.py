@@ -65,9 +65,6 @@ def encriptar_enigma(mensagem : str,
               Q : np.ndarray) -> str:
     """
     Encripta uma mensagem usando duas matrizes de permutação P e Q.
-
-    Alphabet é um numpy array com todas as letras da mensagem e letras disponíveis para a criptografia.
-    Se não for passado, ele é calculado automaticamente como as ocorrências únicas das letras da mensagem.
     """
 
     message_matrix = message_to_matrix(mensagem)
